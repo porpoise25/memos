@@ -14,6 +14,6 @@ const server = http.createServer((req,res) => {
  *　サーバーを起動
  */
 const port = 8000;
-server.listen(port,() => {
+server.listen(process.env.PORT || port,() => {
     console.log('Listening on ' + port);
 })
