@@ -5,7 +5,7 @@ var fs = require('fs');
 var qs = require('querystring');
 //ファイルの読み込み
 var template = fs.readFileSync(__dirname + '/index.ejs', 'utf-8');
-const style = fs.readFileSync('./css/common.css', 'utf-8');
+const style = fs.readFileSync(__dirname + '/css/common.css', 'utf-8');
 //グローバル変数
 var posts = [];
 var msg = '';
