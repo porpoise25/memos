@@ -5,7 +5,7 @@ var fs = require('fs');
 var qs = require('querystring');
 //ファイルの読み込み
 var template = fs.readFileSync(__dirname + '/index.ejs', 'utf-8');
-const style = fs.readFileSync(__dirname + '/css/common.css', 'utf-8');
+const style = fs.readFileSync(__dirname + '/common.css', 'utf-8');
 //グローバル変数
 var posts = [];
 var msg = '';
@@ -27,9 +27,10 @@ function renderList(posts, res) {
  * サーバーの作成
  */
 const server = http.createServer((req,res) => {
+    
     //cssの読み込み
     switch(req.url){
-        case '/css/common.css':
+        case '/common.css':
             res.writeHead(200, {'Content-Type': 'text/css'});
             res.write(style);   
             break;
