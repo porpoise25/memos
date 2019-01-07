@@ -19,11 +19,12 @@
     </form>
     <%# 入力不備の表示 %>
     <p><%= msg %></p>
+    <p>「<%= posts%>」が保存されました</p>
       
     <%# 入力内容表示 %>
     <ul>
-    <% for (var i = 0; i < posts.length; i++) { %>
-        <li><%= posts[i] %></li>
+    <% for (var i = 0; i < savedMemo.length; i++) { %>
+        <li><%= savedMemo[i] %></li>
     <% } %>
     </ul>
 </body>
