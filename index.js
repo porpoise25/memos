@@ -18,7 +18,7 @@ var savedMemo =[];
 /**
  * mongodbに接続
  */
-mongoose.connect('mongodb://localhost/memolist',{useNewUrlParser: true},
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/memolist',{useNewUrlParser: true},
     function(err) {
         if (err) {
             console.log(err);
@@ -83,7 +83,6 @@ const server = http.createServer((req,res) => {
                 msg = '';
                 posts = query.memo;
                 //メモをデータベースに保存する
-                //posts.push(query.memo);
                 var newMemo = new Memo({
                     content: query.memo,
                     createdDate : Date.now()
