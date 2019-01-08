@@ -18,7 +18,7 @@ var savedMemo =[];
 /**
  * mongodbに接続
  */
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/memolist',{useNewUrlParser: true},
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/memolist',{useNewUrlParser: true},
     function(err) {
         if (err) {
             console.log(err);
