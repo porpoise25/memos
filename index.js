@@ -40,7 +40,6 @@ function renderList(res) {
                 if(err)throw err;
                 for (var i=0, size=docs.length; i<size; i++) {
                     savedMemo[i]=docs[i].content;
-                    console.log(docs[i].content);
                 }
             });
         }
@@ -50,7 +49,6 @@ function renderList(res) {
         posts:posts,
         msg : msg,
     });
-    console.log(savedMemo);
     res.writeHead(200, {'Content-Type' : 'text/html'});
     res.write(data);
     res.end();
@@ -90,8 +88,6 @@ const server = http.createServer((req,res) => {
                 newMemo.save((err)=>{
                     if(err){
                         console.log(err);
-                    }else{
-                        console.log(newMemo + 'が保存されました');
                     }
                 })
             }else{
