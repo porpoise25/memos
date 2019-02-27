@@ -1,7 +1,7 @@
 {
   "name": "memos",
   "version": "1.0.0",
-  "description": "",
+  "description": "簡易メモアプリ ==== Webアプリ開発の練習で作成している簡易メモアプリです　開発途中",
   "main": "index.js",
   "scripts": {
     "start": "node index",
@@ -13,6 +13,14 @@
     "ejs": "^2.6.1",
     "moment": "^2.23.0",
     "mongodb": "^3.1.10",
-    "mongoose": "^5.4.1"
-  }
+    "mongoose": "^5.4.16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/porpoise25/memos.git"
+  },
+  "bugs": {
+    "url": "https://github.com/porpoise25/memos/issues"
+  },
+  "homepage": "https://github.com/porpoise25/memos#readme"
 }

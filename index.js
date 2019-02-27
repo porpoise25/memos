@@ -15,6 +15,7 @@ const style = fs.readFileSync(__dirname + '/common.css', 'utf-8');
 var posts = '';
 var msg = '';
 var savedMemo =[];
+
 /**
  * mongodbに接続
  */
@@ -26,9 +27,51 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/memolist',{useN
             console.log('接続成功!');
         }
 });
+
+
 /**
- * ejsでメモリストを作る関数
+ * サーバーの作成
  */
+const server = http.createServer((req,res) => {
+    //cssの読み込み
+    switch(req.url){
+        case '/common.css':
+            res.writeHead(200, {'Content-Type': 'text/css'});
+            res.write(style);   
+        break;
+    }
+    //保存ボタンが押されたとき
+    if (req.method === 'POST') {
+        req.data = '';
+        //フォームデータ受信
+        req.on('readable', function() {
+            req.data += req.read() || '';
+            console.log(req.data);
+        });
+        req.on('end', function() {
+            
+            //受け取ったデータをデータベースに保存する
+            saveDataBase(qs.parse(req.data));
+
+            renderList(res);
+        });
+    } else {
+        renderList(res);
+    }
+})
+/**
+ *　サーバーを起動
+ */
+const port = 8000;
+server.listen(process.env.PORT || port,() => {
+    console.log('Listening on ' + port);
+})
+
+/**
+ * ここから関数
+ */
+
+//ejsでメモリストを作る関数
 function renderList(res) {
     //10個までデータベースを検索する
     Memo.find({},{content:10},function(err){
@@ -54,56 +97,23 @@ function renderList(res) {
     res.end();
 }
 
-/**
- * サーバーの作成
- */
-const server = http.createServer((req,res) => {
-    //cssの読み込み
-    switch(req.url){
-        case '/common.css':
-            res.writeHead(200, {'Content-Type': 'text/css'});
-            res.write(style);   
-        break;
-    }
-    //保存ボタンが押されたとき
-    if (req.method === 'POST') {
-        req.data = '';
-        //フォームデータ受信
-        req.on('readable', function() {
-            req.data += req.read() || '';
-            console.log(req.data);
+//データベースにメモを保存する関数
+function saveDataBase(query){
+    //メモ表示:文字入力がないときは表示しない
+    if(query.memo){
+        msg = '';
+        posts = query.memo;
+        //メモをデータベースに保存する
+        var newMemo = new Memo({
+            content: query.memo,
+            createdDate : Date.now()
         });
-        req.on('end', function() {
-            var query = qs.parse(req.data);
-            console.log(query);
-            //メモ表示:文字入力がないときは表示しない
-            if(query.memo){
-                msg = '';
-                posts = query.memo;
-                //メモをデータベースに保存する
-                var newMemo = new Memo({
-                    content: query.memo,
-                    createdDate : Date.now()
-                });
-                newMemo.save((err)=>{
-                    if(err){
-                        console.log(err);
-                    }
-                })
-            }else{
-                msg = '文字が入力されていません';
+        newMemo.save((err)=>{
+            if(err){
+                console.log(err);
             }
-            renderList(res);
-        });
-    } else {
-        renderList(res);
+        })
+    }else{
+        msg = '文字が入力されていません';
     }
-})
-/**
- *　サーバーを起動
- */
-const port = 8000;
-server.listen(process.env.PORT || port,() => {
-    console.log('Listening on ' + port);
-})
-
+}
